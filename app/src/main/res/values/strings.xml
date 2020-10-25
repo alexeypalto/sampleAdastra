@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">sampleAdastra</string>
+
+    <!--Common-->
+    <string name="common_empty">No memes ¯\_(ツ)_/¯</string>
+    <string name="common_loading">Loading…( ͡° ͜ʖ ͡°)</string>
+
+    <!--All Memes-->
+    <string name="all_memes_title">All Memes</string>
+
+    <!--Favorite Memes-->
+    <string name="favorite_memes_title">Favorite Memes</string>
+
+    <!--Meme-->
+    <string name="meme_title">Meme</string>
+    <string name="meme_created_text">Created at: %s</string>
+    <string name="meme_add_action_text">Add meme to Favorite</string>
+    <string name="meme_remove_action_text">Remove meme from Favorite</string>
 </resources>
