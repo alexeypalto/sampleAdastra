@@ -7,9 +7,9 @@ import retrofit2.http.Path
 interface MemesService {
 
     companion object {
-        private const val SERVICE_PREFIX = "namo-memes.herokuapp.com"
+        const val SERVICE_PREFIX = "namo-memes.herokuapp.com"
     }
 
-    @GET("$SERVICE_PREFIX/memes/{count}")
+    @GET("memes/{count}")
     suspend fun getRandomMemes(@Path("count") count: Int): List<MemeResponse>
 }

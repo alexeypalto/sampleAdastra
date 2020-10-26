@@ -16,10 +16,14 @@ class MemeItem(viewState: MemeViewState): BaseListItem<MemeViewState>(viewState)
         with(view) {
             Glide.with(this)
                 .load(viewState.url)
-                .placeholder(R.drawable.ic_launcher_background)
-                .fallback(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_placeholder_fallback)
+                .fallback(R.drawable.ic_placeholder_fallback)
                 .into(im_img)
-            im_date.text = viewState.createdAt.convertToString()
+            im_date.text = context.getString(R.string.meme_created_text, viewState.createdAt.convertToString())
         }
+    }
+
+    override fun recycleView(view: View?) {
+        view?.let { Glide.with(it).clear(view.im_img) }
     }
 }

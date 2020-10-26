@@ -18,7 +18,7 @@ android {
     }
 
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -65,21 +65,17 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit_version"
 
+    //Okhttp
+    implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttp_version"
+
     //Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.kotlin_coruntines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.kotlin_coruntines_version"
 
-
-    //Arch
-    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.arch_version"
-    implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:$rootProject.arch_version"
-    implementation 'androidx.lifecycle:lifecycle-common:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
-
     implementation "androidx.core:core-ktx:$rootProject.core_ktx_version"
 
     //Dagger 2
-    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger_version"
     implementation "com.google.dagger:dagger:$rootProject.dagger_version"
     implementation "com.google.dagger:dagger-android-support:$rootProject.dagger_version"
     kapt "com.google.dagger:dagger-compiler:$rootProject.dagger_version"

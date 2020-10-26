@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/MemeCardView.Item"
     android:layout_width="match_parent"
     android:layout_height="250dp"
-    app:contentPadding="12dp">
+    android:layout_marginTop="10dp">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -20,25 +19,19 @@
             tools:ignore="ContentDescription"
             tools:src="@mipmap/ic_launcher" />
 
-        <ImageView
-            android:id="@+id/im_action"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="5dp"
-            android:layout_gravity="end|bottom"
-            android:src="@drawable/ic_favorite_empty"
-            tools:ignore="ContentDescription" />
-
         <TextView
             android:id="@+id/im_date"
             style="@style/MemeTextViewMedium.White"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@drawable/shape_gradient_black"
+            android:layout_margin="5dp"
+            android:background="@drawable/shape_backgound_purple_transparent"
             android:gravity="center_horizontal"
-            android:paddingTop="30dp"
-            android:paddingBottom="10dp"
+            android:paddingStart="12dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="8dp"
             tools:text="Created At: 20dp" />
 
     </FrameLayout>

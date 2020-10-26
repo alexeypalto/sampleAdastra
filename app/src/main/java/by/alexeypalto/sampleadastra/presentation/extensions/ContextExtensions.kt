@@ -1,25 +1,12 @@
 package by.alexeypalto.sampleadastra.presentation.extensions
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.AttrRes
-import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
-import timber.log.Timber
-
-@SuppressLint("UseCompatLoadingForDrawables")
-fun Context.getDrawableById(@DrawableRes id: Int): Drawable? {
-    return try {
-        resources.getDrawable(id, theme)
-    } catch (e: Exception) {
-        Timber.e(e)
-        null
-    }
-}
 
 fun Context.inflateLayout(@LayoutRes layoutResId: Int, parent: ViewGroup? = null, attachToRoot: Boolean = false): View = LayoutInflater.from(this).inflate(layoutResId, parent, attachToRoot)
 

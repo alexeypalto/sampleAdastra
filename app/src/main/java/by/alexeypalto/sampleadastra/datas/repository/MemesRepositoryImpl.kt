@@ -4,40 +4,44 @@ import by.alexeypalto.sampleadastra.datas.datasource.MemesDataSource
 import by.alexeypalto.sampleadastra.domain.models.Meme
 import by.alexeypalto.sampleadastra.domain.repository.MemesRepository
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class MemesRepositoryImpl @Inject constructor(
-    private val localMemesDataSource: MemesDataSource,
-    private val remoteMemesDataSource: MemesDataSource,
+    private val memesDataSource: MemesDataSource,
     private val ioDispatcher: CoroutineDispatcher
 ) : MemesRepository {
 
     override suspend fun getMemes(count: Int): List<Meme> {
         return withContext(ioDispatcher) {
-            remoteMemesDataSource.getMemes(count)
+            memesDataSource.getMemes(count)
         }
     }
 
-    override suspend fun getFavoriteMemes(): Flow<List<Meme>> {
+    override suspend fun getFavoriteMemes(): List<Meme> {
         return withContext(ioDispatcher) {
-            localMemesDataSource.getFavoriteMemes().map { list -> list ?: emptyList() }
+            memesDataSource.getFavoriteMemes()
         }
     }
 
     override suspend fun addMemeToFavorite(meme: Meme) {
         withContext(ioDispatcher) {
-            localMemesDataSource.addMemeToFavorites(meme)
+            memesDataSource.addMemeToFavorites(meme)
         }
     }
 
-    override suspend fun removeMemeFromFavorites(id: Int) {
+    override suspend fun removeMemeFromFavorites(id: String) {
         withContext(ioDispatcher) {
-            localMemesDataSource.removeMemeFromFavorites(id)
+            memesDataSource.removeMemeFromFavorites(id)
         }
     }
+
+    override suspend fun isMemeExist(id: String): Boolean {
+        return withContext(ioDispatcher) {
+            memesDataSource.isMemeExist(id)
+        }
+    }
+
 }

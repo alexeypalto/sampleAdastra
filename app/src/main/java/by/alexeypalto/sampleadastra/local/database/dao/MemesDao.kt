@@ -1,8 +1,10 @@
 package by.alexeypalto.sampleadastra.local.database.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import by.alexeypalto.sampleadastra.local.database.entities.MemeEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MemesDao {
@@ -11,8 +13,11 @@ interface MemesDao {
     suspend fun addMemeToFavorites(meme: MemeEntity)
 
     @Query("DELETE FROM Meme WHERE id == :id")
-    suspend fun removeMemeFromFavorites(id: Int)
+    suspend fun removeMemeFromFavorites(id: String)
 
     @Query("SELECT * FROM Meme")
-    fun getFavoriteMemes(): Flow<List<MemeEntity>?>
+    fun getFavoriteMemes(): List<MemeEntity>?
+
+    @Query("SELECT EXISTS(SELECT * FROM Meme WHERE id = :id)")
+    fun isMemeIsExist(id : String) : Boolean
 }

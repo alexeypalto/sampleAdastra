@@ -9,7 +9,7 @@ import java.util.*
 data class MemeEntity(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
-    val id: Int,
+    val id: String,
     @ColumnInfo(name = "url")
     val url: String,
     @ColumnInfo(name = "createdAt")

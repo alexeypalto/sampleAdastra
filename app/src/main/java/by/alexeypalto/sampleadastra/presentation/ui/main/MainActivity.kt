@@ -1,29 +1,21 @@
 package by.alexeypalto.sampleadastra.presentation.ui.main
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentFactory
-import androidx.lifecycle.ViewModelProvider
 import by.alexeypalto.sampleadastra.R
 import by.alexeypalto.sampleadastra.presentation.base.BaseActivity
 import by.alexeypalto.sampleadastra.presentation.base.BaseFragment
 import by.alexeypalto.sampleadastra.presentation.base.FragmentNavigation
 import by.alexeypalto.sampleadastra.presentation.ui.allmemes.AllMemesFragment
 import by.alexeypalto.sampleadastra.presentation.ui.favoritememes.FavoriteMemesFragment
-import by.alexeypalto.sampleadastra.presentation.ui.meme.MemeFragment
 import by.alexeypalto.sampleadastra.presentation.ui.views.BottomNavigation
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavLogger
 import com.ncapdevi.fragnav.FragNavTransactionOptions
-import dagger.android.AndroidInjection
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
-import javax.inject.Inject
-import kotlin.reflect.KClass
 
 private const val KEY_IS_ROOT = "KEY_IS_ROOT"
 
@@ -56,10 +48,8 @@ class MainActivity : BaseActivity(),
 
     override fun getRootFragment(index: Int): Fragment {
         return when (index) {
-            BottomNavigation.NavigationMenu.HOME.ordinal ->
-                supportFragmentManager.fragmentFactory.instantiate(classLoader, AllMemesFragment::class.java.name)
-            BottomNavigation.NavigationMenu.FAVORITE.ordinal ->
-                supportFragmentManager.fragmentFactory.instantiate(classLoader, AllMemesFragment::class.java.name)
+            BottomNavigation.NavigationMenu.HOME.ordinal -> AllMemesFragment.newInstance()
+            BottomNavigation.NavigationMenu.FAVORITE.ordinal -> FavoriteMemesFragment.newInstance()
             else -> throw IllegalStateException("Need to send an index that we know")
         }
     }
@@ -79,14 +69,6 @@ class MainActivity : BaseActivity(),
             .build()
         if (!fragNavController.isStateSaved) {
             fragNavController.pushFragment(fragment, options)
-        }
-    }
-
-    override fun pushFragment(kClass: KClass<out Fragment>, args: Bundle, sharedElements: List<Pair<View, String>>) {
-        classLoader?.let {
-            pushFragment(supportFragmentManager.fragmentFactory.instantiate(it, kClass.java.name).apply {
-                arguments = args
-            }, sharedElements)
         }
     }
 
@@ -122,6 +104,16 @@ class MainActivity : BaseActivity(),
         am_navigation.onTabReselectListener = {
             fragNavController.clearStack()
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+        }
+        return false
     }
 
 }

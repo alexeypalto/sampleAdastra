@@ -18,4 +18,7 @@ interface MemesUseCasesModule {
 
     @Binds
     fun bindRemoveMemeFromFavoriteUseCase(useCase: RemoveMemeFromFavoriteUseCaseImpl): RemoveMemeFromFavoriteUseCase
+
+    @Binds
+    fun bindIsMemeExistsUseCase(useCase: IsMemeExistUseCaseImpl): IsMemeExistUseCase
 }

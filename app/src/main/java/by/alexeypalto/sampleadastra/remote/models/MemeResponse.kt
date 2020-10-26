@@ -5,7 +5,7 @@ import java.util.*
 
 data class MemeResponse(
     @SerializedName("_id")
-    val id: Int,
+    val id: String,
     @SerializedName("url")
     val url: String,
     @SerializedName("createdAt")

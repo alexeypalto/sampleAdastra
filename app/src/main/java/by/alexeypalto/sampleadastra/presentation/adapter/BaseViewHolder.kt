@@ -26,11 +26,6 @@ class BaseViewHolder<VS : Any>(view: View,
         }
     }
 
-
-    fun selectItem(isSelected: Boolean) {
-        (item as? SelectableItem)?.selectItem(isSelected)
-    }
-
     private fun setClickListeners(view: View?, holderItem: BaseListItem<VS>) {
         onItemClickListener?.let {
             view?.setOnClickListener {

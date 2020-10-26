@@ -3,31 +3,24 @@ package by.alexeypalto.sampleadastra.presentation.ui.allmemes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import by.alexeypalto.sampleadastra.domain.state.Result
-import by.alexeypalto.sampleadastra.presentation.base.delegates.ViewModelRecyclerDelegate
 import by.alexeypalto.sampleadastra.domain.errors.ErrorHandler
-import by.alexeypalto.sampleadastra.domain.models.Meme
-import by.alexeypalto.sampleadastra.domain.uscases.AddMemeToFavoriteUseCase
+import by.alexeypalto.sampleadastra.domain.state.Result
 import by.alexeypalto.sampleadastra.domain.uscases.GetMemesUseCase
-import by.alexeypalto.sampleadastra.domain.uscases.RemoveMemeFromFavoriteUseCase
+import by.alexeypalto.sampleadastra.presentation.base.delegates.ViewModelRecyclerDelegate
 import by.alexeypalto.sampleadastra.presentation.viewstate.MemeViewState
 import by.alexeypalto.sampleadastra.presentation.viewstate.MemeViewStateMapper
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
 
 const val DEFAULT_MEMES_COUNT = 30
 
-class AllMemesViewModel @Inject constructor(
+class AllMemesViewModel(
     private val getMemesUseCase: GetMemesUseCase,
-    private val addMemeToFavoriteUseCase: AddMemeToFavoriteUseCase,
-    private val removeMemeFromFavoriteUseCase: RemoveMemeFromFavoriteUseCase,
     private val memesViewStateMapper: MemeViewStateMapper,
     private val errorHandler: ErrorHandler
 ) : ViewModel() {
 
-    var count: Int = DEFAULT_MEMES_COUNT
+    private var count: Int = DEFAULT_MEMES_COUNT
 
     val recyclerDelegate by lazy { ViewModelRecyclerDelegate(viewModelScope, ::loadData) }
 
@@ -35,43 +28,26 @@ class AllMemesViewModel @Inject constructor(
         this.count = count
     }
 
-    private suspend fun loadData(): Result<List<MemeViewState>>{
+    private suspend fun loadData(): Result<List<MemeViewState>> {
         return withContext(viewModelScope.coroutineContext) {
             try {
                 val result = getMemesUseCase(count)
-                Result.Success(result.map(memesViewStateMapper::invoke))
-            } catch(e: Exception) {
+                Result.Success(result.map(memesViewStateMapper::mapToViewState))
+            } catch (e: Exception) {
                 Timber.e(e)
                 Result.Error(errorHandler(e))
             }
         }
     }
 
-    fun addMemeToFavorite(memeViewState: MemeViewState) {
-        viewModelScope.launch {
-            try {
-                addMemeToFavoriteUseCase.invoke(convertVSToModel(memeViewState))
-            } catch (e: Exception) {
-                Timber.e(e)
-            }
+    class Factory(
+        private val getAllMemesUseCase: GetMemesUseCase,
+        private val mapper: MemeViewStateMapper,
+        private val errorHandler: ErrorHandler
+    ) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return AllMemesViewModel(getAllMemesUseCase, mapper, errorHandler) as T
         }
-    }
-
-    fun removeMemeFromFavorite(id: Int) {
-        viewModelScope.launch {
-            try {
-                removeMemeFromFavoriteUseCase.invoke(id)
-            } catch (e: Exception) {
-                Timber.e(e)
-            }
-        }
-    }
-
-    private fun convertVSToModel(viewState: MemeViewState): Meme {
-        return Meme(
-            id = viewState.id,
-            url = viewState.url,
-            createdAt = viewState.createdAt
-        )
     }
 }

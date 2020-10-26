@@ -2,7 +2,7 @@
     <string name="app_name">sampleAdastra</string>
 
     <!--Common-->
-    <string name="common_empty">No memes ¯\_(ツ)_/¯</string>
+    <string name="common_empty">No memes ¯\\_(ツ)_/¯</string>
     <string name="common_loading">Loading…( ͡° ͜ʖ ͡°)</string>
 
     <!--All Memes-->

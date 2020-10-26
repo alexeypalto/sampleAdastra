@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
 import by.alexeypalto.sampleadastra.di.DaggerAppComponent
+import by.alexeypalto.sampleadastra.local.database.DatabaseManager
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -28,7 +29,8 @@ class AdastraApp: Application(), HasAndroidInjector {
         INSTANCE = this
         super.onCreate()
         DaggerAppComponent.builder().context(this.applicationContext).build().injectApp(this)
-//        Timber.plant(Timber.asTree())
+        DatabaseManager.createDb(this.applicationContext)
+        Timber.plant(Timber.DebugTree())
     }
 
     override fun attachBaseContext(base: Context) {

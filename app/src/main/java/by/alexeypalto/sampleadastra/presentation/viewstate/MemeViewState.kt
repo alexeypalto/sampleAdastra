@@ -6,7 +6,7 @@ import java.util.*
 
 @Parcelize
 data class MemeViewState(
-    val id: Int,
+    val id: String,
     val url: String,
     val createdAt: Date
 ) : Parcelable

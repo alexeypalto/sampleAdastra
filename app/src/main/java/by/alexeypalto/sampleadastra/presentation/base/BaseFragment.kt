@@ -1,7 +1,6 @@
 package by.alexeypalto.sampleadastra.presentation.base
 
 import android.content.Context
-import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.LayoutRes
@@ -12,16 +11,15 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
-import kotlin.reflect.KClass
 
-abstract class BaseFragment @JvmOverloads constructor(@LayoutRes contentLayoutId: Int = 0) : Fragment(contentLayoutId), FragmentNavigation, ProceedError {
+abstract class BaseFragment @JvmOverloads constructor(@LayoutRes contentLayoutId: Int = 0) : Fragment(contentLayoutId), FragmentNavigation, ProceedError, HasAndroidInjector {
 
-//    var androidInjector: DispatchingAndroidInjector<Any>? = null
-//        @Inject set
-//
-//    override fun androidInjector(): AndroidInjector<Any>? {
-//        return androidInjector
-//    }
+    var androidInjector: DispatchingAndroidInjector<Any>? = null
+        @Inject set
+
+    override fun androidInjector(): AndroidInjector<Any>? {
+        return androidInjector
+    }
 
     private var fragmentNavigation: FragmentNavigation? = null
 
@@ -42,10 +40,6 @@ abstract class BaseFragment @JvmOverloads constructor(@LayoutRes contentLayoutId
 
     override fun pushFragment(fragment: Fragment, sharedElements: List<Pair<View, String>>) {
         fragmentNavigation?.pushFragment(fragment, sharedElements)
-    }
-
-    override fun pushFragment(kClass: KClass<out Fragment>, args: Bundle, sharedElements: List<Pair<View, String>>) {
-        fragmentNavigation?.pushFragment(kClass, args, sharedElements)
     }
 
     override fun popFragment(popDepth: Int) {

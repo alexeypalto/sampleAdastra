@@ -1,6 +1,5 @@
 package by.alexeypalto.sampleadastra.presentation.base.delegates
 
-import android.app.Activity
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.IdRes
@@ -12,16 +11,16 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import by.alexeypalto.sampleadastra.R
+import by.alexeypalto.sampleadastra.domain.state.Result
 import by.alexeypalto.sampleadastra.presentation.adapter.BaseListItem
 import by.alexeypalto.sampleadastra.presentation.adapter.BaseRecyclerAdapter
 import by.alexeypalto.sampleadastra.presentation.base.ProceedError
-import by.alexeypalto.sampleadastra.domain.state.Result
 import by.alexeypalto.sampleadastra.presentation.extensions.gone
 import by.alexeypalto.sampleadastra.presentation.extensions.show
 
 open class ViewRecyclerDelegate<VS : Any>(
     mapper: (VS) -> BaseListItem<VS>,
-    @IdRes private val refreshId: Int = R.id.refresh,
+    @IdRes private val refreshId: Int? = R.id.refresh,
     @IdRes private val recyclerId: Int = R.id.recycler,
     @IdRes private val progressId: Int = R.id.progress,
     @IdRes private val errorMessageId: Int = R.id.error_message,
@@ -46,8 +45,7 @@ open class ViewRecyclerDelegate<VS : Any>(
     }
 
     fun init(fragment: Fragment, recyclerDelegate: ViewModelRecyclerDelegate<VS>) {
-        refresh = fragment.view?.findViewById(refreshId)
-            ?: throw IllegalArgumentException("Cannot find ${::refreshId.name}")
+        refresh = refreshId?.let { fragment.view?.findViewById(it) }
         recycler = fragment.view?.findViewById(recyclerId)
             ?: throw IllegalArgumentException("Cannot find ${::recyclerId.name}")
         progress = fragment.view?.findViewById(progressId)
@@ -64,7 +62,7 @@ open class ViewRecyclerDelegate<VS : Any>(
             recyclerDelegate.refresh()
         }
         recyclerDelegate.itemsList.observe(lifecycleOwner, Observer(::observeItems))
-        recyclerDelegate.refreshStateLiveData.observe(lifecycleOwner, Observer {
+        recyclerDelegate.refreshStateLiveData.observe(lifecycleOwner, {
             when (it) {
                 is Result.Loading -> {
                     progress?.show(adapter.itemCount == 0 && refresh?.isRefreshing != true)

@@ -1,5 +1,5 @@
 package by.alexeypalto.sampleadastra.domain.uscases
 
 interface RemoveMemeFromFavoriteUseCase {
-    suspend operator fun invoke(id: Int)
+    suspend operator fun invoke(id: String)
 }

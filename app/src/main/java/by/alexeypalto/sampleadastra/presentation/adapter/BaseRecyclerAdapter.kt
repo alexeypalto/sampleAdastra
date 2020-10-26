@@ -41,12 +41,6 @@ class BaseRecyclerAdapter<VS : Any>(
 
     override fun getItemViewType(position: Int): Int = dataset[position].getViewId()
 
-    fun getItem(position: Int) = dataset[position]
-
-    fun addElements(newElements: Collection<VS>) {
-        dataset.addAll(newElements.map(mapper))
-    }
-
     fun replaceElements(newElements: List<VS>) {
         dataset.clear()
         dataset.addAll(newElements.map(mapper))
@@ -57,52 +51,6 @@ class BaseRecyclerAdapter<VS : Any>(
         val diffResult = DiffUtil.calculateDiff(diffUtilCallback, enableAnimation)
         replaceElements(items)
         diffResult.dispatchUpdatesTo(this)
-    }
-
-    fun replaceElement(item: VS, position: Int) {
-        if (position < dataset.size) {
-            dataset.removeAt(position)
-            dataset.add(position, mapper(item))
-        }
-    }
-
-    fun addElement(item: VS) {
-        dataset.add(mapper(item))
-    }
-
-    fun addElement(position: Int, item: VS) {
-        dataset.add(position, mapper(item))
-    }
-
-    fun addElements(position: Int, items: List<VS>) {
-        dataset.addAll(position, items.map(mapper))
-    }
-
-    fun addElementsAnimated(pivotItem: VS, items: List<VS>) {
-        val pivotPosition = dataset.indexOf(mapper(pivotItem))
-        if (pivotPosition >= 0) {
-            val startPosition = pivotPosition + 1
-            addElements(startPosition, items)
-            notifyItemRangeInserted(startPosition, items.size)
-        }
-    }
-
-    fun removeElement(item: VS) {
-        dataset.remove(mapper(item))
-    }
-
-    fun removeElements(items: List<VS>) {
-        dataset.removeAll(items.map(mapper))
-    }
-
-    fun removeElementByPosition(position: Int) {
-        if (dataset.size > position) {
-            dataset.removeAt(position)
-        }
-    }
-
-    fun clear() {
-        dataset.clear()
     }
 }
 
